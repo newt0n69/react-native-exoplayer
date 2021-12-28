@@ -29,7 +29,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.0'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.8.0'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.8.0'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.16.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.16.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.16.1'
 }
