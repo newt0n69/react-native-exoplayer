@@ -6,7 +6,7 @@ def safeExtGet(prop, fallback) {
 
 android {
     configurations.all {
-        resolutionStrategy { force 'androidx.core:core:1.6.0' }
+        resolutionStrategy { force 'androidx.core:core:1.7.0' }
     }
 
     compileSdkVersion safeExtGet('compileSdkVersion', 31)
