@@ -3,14 +3,20 @@ package com.ngager.videoplayer;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackException;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 
@@ -81,8 +87,13 @@ public class ExoPlayer extends Activity {
 
         //trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         //lastSeenTrackGroupArray = null;
-
-        player = new com.google.android.exoplayer2.ExoPlayer.Builder(this).build();
+        
+        ContextCompat.getMainExecutor(this).execute(new Runnable() {
+            @Override
+            public void run() {
+                player = new com.google.android.exoplayer2.ExoPlayer.Builder(getApplicationContext()).build();
+            }
+        });
 
         playerView.setPlayer(player);
 
@@ -90,8 +101,8 @@ public class ExoPlayer extends Activity {
         //player.setPlayWhenReady(shouldAutoPlay);
 
         // Use Hls, Dash or other smooth streaming media source if you want to test the track quality selection.
-/*        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
-                mediaDataSourceFactory, mainHandler, null);*/
+//        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
+//                mediaDataSourceFactory, mainHandler, null);
 
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(url));
 //        MediaSource mediaSource = new ProgressiveMediaSource.Factory(mediaDataSourceFactory)
@@ -101,6 +112,13 @@ public class ExoPlayer extends Activity {
 //        if (haveStartPosition) {
 //            player.seekTo(currentWindow, playbackPosition);
 //        }
+
+        player.addListener(new Player.Listener() {
+            @Override
+            public void onPlayerError(PlaybackException error) {
+                Log.d("QWWWWWWWWWWWWEEEEEEEE", "error: " + error.errorCode + " _ " + error.getMessage());
+            }
+        });
 
         player.addMediaItem(mediaItem);
         player.prepare();
