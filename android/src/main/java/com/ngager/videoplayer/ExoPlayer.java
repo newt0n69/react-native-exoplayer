@@ -78,33 +78,32 @@ public class ExoPlayer extends Activity {
     }
 
     private void initializePlayer() {
-
-        playerView = findViewById(R.id.player_view);
-        playerView.requestFocus();
 //
 //        TrackSelection.Factory videoTrackSelectionFactory =
 //                new AdaptiveTrackSelection.Factory(bandwidthMeter);
 
         //trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         //lastSeenTrackGroupArray = null;
-        
+
         ContextCompat.getMainExecutor(this).execute(new Runnable() {
             @Override
             public void run() {
+
+                playerView = findViewById(R.id.player_view);
+                playerView.requestFocus();
+                
                 player = new com.google.android.exoplayer2.ExoPlayer.Builder(getApplicationContext()).build();
-            }
-        });
 
-        playerView.setPlayer(player);
+                playerView.setPlayer(player);
 
-        //player.addListener(new PlayerEventListener());
-        //player.setPlayWhenReady(shouldAutoPlay);
+                //player.addListener(new PlayerEventListener());
+                //player.setPlayWhenReady(shouldAutoPlay);
 
-        // Use Hls, Dash or other smooth streaming media source if you want to test the track quality selection.
+                // Use Hls, Dash or other smooth streaming media source if you want to test the track quality selection.
 //        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
 //                mediaDataSourceFactory, mainHandler, null);
 
-        MediaItem mediaItem = MediaItem.fromUri(Uri.parse(url));
+                MediaItem mediaItem = MediaItem.fromUri(Uri.parse(url));
 //        MediaSource mediaSource = new ProgressiveMediaSource.Factory(mediaDataSourceFactory)
 //                .createMediaSource(mediaItem);
 //
@@ -113,16 +112,19 @@ public class ExoPlayer extends Activity {
 //            player.seekTo(currentWindow, playbackPosition);
 //        }
 
-        player.addListener(new Player.Listener() {
-            @Override
-            public void onPlayerError(PlaybackException error) {
-                Log.d("QWWWWWWWWWWWWEEEEEEEE", "error: " + error.errorCode + " _ " + error.getMessage());
+                player.addListener(new Player.Listener() {
+                    @Override
+                    public void onPlayerError(PlaybackException error) {
+                        Log.d("QWWWWWWWWWWWWEEEEEEEE", "error: " + error.errorCode + " _ " + error.getMessage());
+                    }
+                });
+
+                player.addMediaItem(mediaItem);
+                player.prepare();
+                player.play();
             }
         });
 
-        player.addMediaItem(mediaItem);
-        player.prepare();
-        player.play();
         //updateButtonVisibilities();
 
 //        ivHideControllerButton.setOnClickListener(new View.OnClickListener() {
