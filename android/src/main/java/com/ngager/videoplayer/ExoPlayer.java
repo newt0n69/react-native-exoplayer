@@ -139,7 +139,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 
     private void releasePlayer() {
         if (player != null) {
-            updateStartPosition();
+//             updateStartPosition();
             shouldAutoPlay = player.getPlayWhenReady();
             player.release();
             player = null;
@@ -181,7 +181,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        updateStartPosition();
+//         updateStartPosition();
 
         outState.putBoolean(KEY_PLAY_WHEN_READY, playWhenReady);
         outState.putInt(KEY_WINDOW, currentWindow);
