@@ -112,7 +112,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
         playerView.setPlayer(player);
 
         //player.addListener(new PlayerEventListener());
-        player.setPlayWhenReady(shouldAutoPlay);
+        //player.setPlayWhenReady(shouldAutoPlay);
 
         // Use Hls, Dash or other smooth streaming media source if you want to test the track quality selection.
 /*        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
@@ -127,7 +127,8 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
             player.seekTo(currentWindow, playbackPosition);
         }
 
-        player.prepare(mediaSource, !haveStartPosition, false);
+        player.setMediaSource(mediaSource);
+        player.prepare();
         //updateButtonVisibilities();
 
 //        ivHideControllerButton.setOnClickListener(new View.OnClickListener() {
