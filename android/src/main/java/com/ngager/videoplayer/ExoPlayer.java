@@ -36,6 +36,7 @@ import com.google.android.exoplayer2.ui.TrackSelectionView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
@@ -54,7 +55,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
     //private DefaultTrackSelector trackSelector;
     private TrackGroupArray lastSeenTrackGroupArray;
     private boolean shouldAutoPlay;
-    private BandwidthMeter bandwidthMeter;
+    //private BandwidthMeter bandwidthMeter;
 
     private ProgressBar progressBar;
     private ImageView ivHideControllerButton;
@@ -87,8 +88,8 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 
 
         shouldAutoPlay = true;
-        bandwidthMeter = new DefaultBandwidthMeter();
-        mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
+        //bandwidthMeter = new DefaultBandwidthMeter();
+        mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"));
         window = new Timeline.Window();
       //  ivHideControllerButton = findViewById(R.id.exo_controller);
       //  ivSettings = findViewById(R.id.settings);
@@ -139,7 +140,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 
     private void releasePlayer() {
         if (player != null) {
-//             updateStartPosition();
+            //updateStartPosition();
             shouldAutoPlay = player.getPlayWhenReady();
             player.release();
             player = null;
@@ -181,7 +182,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//         updateStartPosition();
+        //updateStartPosition();
 
         outState.putBoolean(KEY_PLAY_WHEN_READY, playWhenReady);
         outState.putInt(KEY_WINDOW, currentWindow);
