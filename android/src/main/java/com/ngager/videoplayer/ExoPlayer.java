@@ -4,43 +4,38 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.view.Window;
+import android.view.WindowManager;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-public class ExoPlayer extends Activity implements View.OnClickListener {
+public class ExoPlayer extends Activity {
 
-    private static final String KEY_PLAY_WHEN_READY = "play_when_ready";
-    private static final String KEY_WINDOW = "window";
-    private static final String KEY_POSITION = "position";
+//    private static final String KEY_PLAY_WHEN_READY = "play_when_ready";
+//    private static final String KEY_WINDOW = "window";
+//    private static final String KEY_POSITION = "position";
 
     private PlayerView playerView;
     private com.google.android.exoplayer2.ExoPlayer player;
-
-    private Timeline.Window window;
-    private DataSource.Factory mediaDataSourceFactory;
-    //private DefaultTrackSelector trackSelector;
-    private TrackGroupArray lastSeenTrackGroupArray;
-    private boolean shouldAutoPlay;
-    //private BandwidthMeter bandwidthMeter;
-
-    private ProgressBar progressBar;
-    private ImageView ivHideControllerButton;
-    private ImageView ivSettings;
-    private boolean playWhenReady;
-    private int currentWindow;
-    private long playbackPosition;
+//
+//    private Timeline.Window window;
+//    private DataSource.Factory mediaDataSourceFactory;
+//    //private DefaultTrackSelector trackSelector;
+//    private TrackGroupArray lastSeenTrackGroupArray;
+//    private boolean shouldAutoPlay;
+//    //private BandwidthMeter bandwidthMeter;
+//
+//    private ProgressBar progressBar;
+//    private ImageView ivHideControllerButton;
+//    private ImageView ivSettings;
+//    private boolean playWhenReady;
+//    private int currentWindow;
+//    private long playbackPosition;
     private String url;
 
     @Override
@@ -53,30 +48,26 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             url = extras.getString("url");
-            playWhenReady = true;
-            currentWindow = 0;
-            playbackPosition = 0;
+//            playWhenReady = true;
+//            currentWindow = 0;
+//            playbackPosition = 0;
         } else {
-            playWhenReady = savedInstanceState.getBoolean(KEY_PLAY_WHEN_READY);
-            currentWindow = savedInstanceState.getInt(KEY_WINDOW);
-            playbackPosition = savedInstanceState.getLong(KEY_POSITION);
+//            playWhenReady = savedInstanceState.getBoolean(KEY_PLAY_WHEN_READY);
+//            currentWindow = savedInstanceState.getInt(KEY_WINDOW);
+//            playbackPosition = savedInstanceState.getLong(KEY_POSITION);
             url = savedInstanceState.getString("url");
         }
 
 
-
-        shouldAutoPlay = true;
+        //shouldAutoPlay = true;
         //bandwidthMeter = new DefaultBandwidthMeter();
-        mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"));
-        window = new Timeline.Window();
-      //  ivHideControllerButton = findViewById(R.id.exo_controller);
-      //  ivSettings = findViewById(R.id.settings);
-        progressBar = findViewById(R.id.progress_bar);
+        //mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"));
+        //window = new Timeline.Window();
+        //  ivHideControllerButton = findViewById(R.id.exo_controller);
+        //  ivSettings = findViewById(R.id.settings);
+        //progressBar = findViewById(R.id.progress_bar);
 
-
-        if (Util.SDK_INT > 23) {
-            initializePlayer();
-        }
+        initializePlayer();
 
     }
 
@@ -89,7 +80,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 //                new AdaptiveTrackSelection.Factory(bandwidthMeter);
 
         //trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        lastSeenTrackGroupArray = null;
+        //lastSeenTrackGroupArray = null;
 
         player = new com.google.android.exoplayer2.ExoPlayer.Builder(this).build();
 
@@ -103,16 +94,17 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
                 mediaDataSourceFactory, mainHandler, null);*/
 
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(url));
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(mediaDataSourceFactory)
-                .createMediaSource(mediaItem);
+//        MediaSource mediaSource = new ProgressiveMediaSource.Factory(mediaDataSourceFactory)
+//                .createMediaSource(mediaItem);
+//
+//        boolean haveStartPosition = currentWindow != C.INDEX_UNSET;
+//        if (haveStartPosition) {
+//            player.seekTo(currentWindow, playbackPosition);
+//        }
 
-        boolean haveStartPosition = currentWindow != C.INDEX_UNSET;
-        if (haveStartPosition) {
-            player.seekTo(currentWindow, playbackPosition);
-        }
-
-        player.setMediaSource(mediaSource);
+        player.addMediaItem(mediaItem);
         player.prepare();
+        player.play();
         //updateButtonVisibilities();
 
 //        ivHideControllerButton.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +118,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
     private void releasePlayer() {
         if (player != null) {
             //updateStartPosition();
-            shouldAutoPlay = player.getPlayWhenReady();
+            ///shouldAutoPlay = player.getPlayWhenReady();
             player.release();
             player = null;
             //trackSelector = null;
@@ -134,14 +126,9 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= 23 || player == null)) {
+        if (player == null) {
             initializePlayer();
         }
     }
@@ -149,26 +136,26 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
+        //if (Util.SDK_INT <= 23) {
             releasePlayer();
-        }
+        //}
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
+        //if (Util.SDK_INT > 23) {
             releasePlayer();
-        }
+        //}
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //updateStartPosition();
 
-        outState.putBoolean(KEY_PLAY_WHEN_READY, playWhenReady);
-        outState.putInt(KEY_WINDOW, currentWindow);
-        outState.putLong(KEY_POSITION, playbackPosition);
+//        outState.putBoolean(KEY_PLAY_WHEN_READY, playWhenReady);
+//        outState.putInt(KEY_WINDOW, currentWindow);
+//        outState.putLong(KEY_POSITION, playbackPosition);
         outState.putString("url", url);
         super.onSaveInstanceState(outState);
     }
@@ -202,8 +189,8 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 //        }
 //    }
 
-    @Override
-    public void onClick(View v) {
+   // @Override
+    //public void onClick(View v) {
 //        if (v.getId() == R.id.settings) {
 //            MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
 //            if (mappedTrackInfo != null) {
@@ -216,7 +203,7 @@ public class ExoPlayer extends Activity implements View.OnClickListener {
 //                dialogPair.first.show();
 //            }
 //        }
-    }
+   // }
 
 //    private class PlayerEventListener extends Player.DefaultEventListener{
 //
